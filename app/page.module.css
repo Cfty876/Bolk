@@ -1,0 +1,530 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.headerWrapper {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 12px 20px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.headerWrapper.scrolled {
+  padding: 8px 20px;
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.4s ease;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 0;
+}
+
+.headerWrapper.scrolled .header {
+  background: rgba(5, 16, 26, 0.5);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 6px 30px;
+  border-radius: 40px;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  border-bottom: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.brandName {
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(to right, #007A99, #1E8449);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 12px;
+  letter-spacing: 1px;
+}
+
+.nav { display: flex; gap: 10px; }
+.nav a { 
+  color: #E0E6ED; 
+  font-weight: 500; 
+  padding: 15px 25px; 
+  position: relative;
+  transition: color 0.2s; 
+  text-decoration: none;
+  display: inline-block;
+}
+.nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+.nav a:hover { color: #fff; }
+.nav a:hover::after { width: calc(100% - 30px); }
+
+.authLinks { display: flex; align-items: center; gap: 20px; margin-right: 60px; }
+
+.loginLink { 
+  color: #fff; 
+  font-weight: 600; 
+  padding: 15px 25px;
+  position: relative;
+  transition: color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.loginLink::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 50px);
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.loginLink:hover::after {
+  width: 0;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--color-bg-dark);
+  color: #fff;
+  overflow: hidden;
+  padding: 0 20px;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at center, rgba(0, 180, 216, 0.1) 0%, transparent 50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin-top: 60px; /* Offset for header */
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes swim {
+  0% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(35vw) translateY(-30px); }
+  50% { transform: translateX(60vw) translateY(20px); }
+  75% { transform: translateX(85vw) translateY(-20px); }
+  100% { transform: translateX(120vw) translateY(0); }
+}
+
+.fish {
+  position: fixed;
+  left: -350px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.fish1 { top: 10%; animation: swim 28s linear infinite; opacity: 0.3; }
+.fish2 { top: 40%; animation: swim 38s linear infinite; animation-delay: -7s; opacity: 0.35; }
+.fish3 { top: 25%; animation: swim 22s linear infinite; animation-delay: -14s; opacity: 0.25; }
+.fish4 { top: 70%; animation: swim 32s linear infinite; animation-delay: -3s; opacity: 0.3; }
+.fish5 { top: 85%; animation: swim 26s linear infinite; animation-delay: -20s; opacity: 0.4; }
+.fish6 { top: 15%; animation: swim 35s linear infinite; animation-delay: -11s; opacity: 0.25; }
+.fish7 { top: 55%; animation: swim 25s linear infinite; animation-delay: -5s; opacity: 0.45; }
+.fish8 { top: 30%; animation: swim 40s linear infinite; animation-delay: -22s; opacity: 0.3; }
+.fish9 { top: 65%; animation: swim 29s linear infinite; animation-delay: -18s; opacity: 0.2; }
+.fish10 { top: 80%; animation: swim 33s linear infinite; animation-delay: -9s; opacity: 0.35; }
+.fish11 { top: 5%; animation: swim 27s linear infinite; animation-delay: -16s; opacity: 0.3; }
+.fish12 { top: 50%; animation: swim 31s linear infinite; animation-delay: -2s; opacity: 0.25; }
+
+.title {
+  font-size: 5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  letter-spacing: -2px;
+  color: #fff;
+}
+
+.slogan {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+  background: linear-gradient(to right, #00B4D8, #2ECC71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.4rem;
+  color: #A0AAB2;
+  margin-bottom: 50px;
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Image Sections */
+.imageSection {
+  padding: 100px 20px;
+  background: var(--color-bg-main);
+  position: relative;
+  overflow: hidden;
+}
+
+.imageSection.dark {
+  background: var(--color-bg-dark);
+}
+
+.ecoSection {
+  background: linear-gradient(135deg, rgba(0, 30, 40, 1), rgba(0, 50, 70, 1));
+  color: white;
+  position: relative;
+}
+
+.ecoSection::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ecoSection::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 180, 216, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.fishCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 60px auto 0;
+  padding: 0 20px;
+}
+
+.fishCard {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.fishCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border-color: var(--color-secondary);
+}
+
+.fishCardImage {
+  width: 100%;
+  height: 200px;
+  background: rgba(0,180,216,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.fishCardContent {
+  padding: 30px;
+}
+
+.fishCardContent h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: var(--color-primary);
+}
+
+.fishCardContent p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.tmaSection {
+  background: #ffffff;
+  color: var(--color-text-main);
+  padding: 100px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.tmaContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.tmaTitle {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.tmaDesc {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.widgetPreview {
+  max-width: 600px;
+  margin: 40px auto 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.imageGrid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.imageGrid.reverse {
+  direction: rtl;
+}
+.imageGrid.reverse > * {
+  direction: ltr;
+}
+
+.textContent h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.imageSection.dark .textContent h2 { color: #fff; }
+.imageSection:not(.dark) .textContent h2 { color: var(--color-primary); }
+
+.textContent p {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.imageWrapper {
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+  transform: translateY(0);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s;
+}
+
+.imageSection.dark .imageWrapper {
+  box-shadow: 0 30px 60px rgba(0,180,216,0.1);
+}
+
+.imageWrapper:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 40px 70px rgba(0,0,0,0.25);
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.footer {
+  background: var(--color-bg-dark);
+  padding: 60px 20px;
+  text-align: center;
+  border-top: 1px solid #1B354C;
+}
+
+/* Premium Buttons */
+.btn-premium {
+  display: inline-block;
+  background: linear-gradient(135deg, #00B4D8 0%, #2ECC71 100%);
+  color: #fff;
+  padding: 18px 48px;
+  border-radius: 40px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 180, 216, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-premium:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(46, 204, 113, 0.5);
+}
+
+.btnGlass {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 18px 48px;
+  border-radius: 40px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.btnGlass:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.btnText {
+  display: inline-block;
+  color: #fff;
+  padding: 18px 30px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+}
+
+.btnText::after {
+  content: '';
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.btnText:hover::after {
+  width: calc(100% - 60px);
+}
+
+.ctaGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .imageGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .imageGrid.reverse {
+    direction: ltr;
+  }
+  .title { font-size: 3.5rem; }
+  .slogan { font-size: 1.6rem; }
+}
+
+@media (max-width: 768px) {
+  /* Шапка */
+  .nav { display: none; }
+  .brandName { font-size: 1.4rem; margin-left: 8px; }
+  .loginLink { padding: 10px 15px; font-size: 0.9rem; }
+  .authLinks { margin-right: 0; }
+  .headerWrapper.scrolled .header { padding: 6px 15px; border-radius: 20px; }
+
+  /* Главный экран */
+  .title { font-size: 2.2rem; }
+  .slogan { font-size: 1.3rem; padding: 0 10px; }
+  .heroContent { padding-top: 100px; padding-bottom: 60px; }
+  .ctaGroup { flex-direction: column; gap: 15px; width: 100%; }
+  .btnGlass, .btnText { width: 100%; text-align: center; justify-content: center; }
+  
+  /* Рыбы анимация */
+  .fish { transform: scale(0.5); }
+  
+  /* Секции */
+  .imageSection, .tmaSection, .featuresSection { padding: 60px 15px; }
+  .tmaTitle { font-size: 1.6rem; }
+  .tmaDesc { font-size: 1rem; }
+  
+  /* Карточки рыб */
+  .fishCard { padding: 20px; }
+  .fishCard h3 { font-size: 1.5rem; }
+}

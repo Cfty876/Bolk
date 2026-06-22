@@ -1,0 +1,13 @@
+names:
+- Salmon
+- salmon
+nc: 2
+roboflow:
+  license: CC BY 4.0
+  project: salmon-5mhyi
+  url: https://universe.roboflow.com/jarl-even-englund-mbbb9/salmon-5mhyi/dataset/2
+  version: 2
+  workspace: jarl-even-englund-mbbb9
+test: C:\Users\masha\Downloads\vetolog fish\vetlog-aqua\train_ai\sockeye_dataset\test\images
+train: C:\Users\masha\Downloads\vetolog fish\vetlog-aqua\train_ai\sockeye_dataset\train\images
+val: C:\Users\masha\Downloads\vetolog fish\vetlog-aqua\train_ai\sockeye_dataset\valid\images

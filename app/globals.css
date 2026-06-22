@@ -1,0 +1,177 @@
+:root {
+  --color-bg-light: #F4F7F9;
+  --color-bg-dark: #05101A; /* Deeper than #0A1E2F for background */
+  
+  --color-primary: #0A1E2F; /* Глубокий синий */
+  --color-secondary: #00B4D8; /* Бирюза */
+  --color-accent: #2ECC71; /* Изумруд (успех/норма) */
+  --color-warning: #F39C12;
+  --color-danger: #E74C3C;
+  --color-text-main: #333333;
+  --color-text-muted: #777777;
+  
+  --color-card-bg: #FFFFFF;
+  --color-border: #E0E6ED;
+
+  /* Glassmorphism Variables (Fallback for Light Theme) */
+  --glass-bg: var(--color-card-bg);
+  --glass-border: var(--color-border);
+  --glass-blur: none;
+  --theme-grid: none;
+  --theme-glow: none;
+}
+
+[data-theme='dark'] {
+  --color-bg-light: #05101A;
+  --color-primary: #00B4D8;
+  --color-secondary: #3498db; /* Ярко-синий для отличного контраста вместо сливающегося #0A1E2F */
+  --color-text-main: #FFFFFF;
+  --color-text-muted: #A0AAB2;
+  --color-card-bg: #0B192C; /* Чуть светлее фона для выделения карточек */
+  --color-border: #1B354C;
+
+  /* Glassmorphism Overrides for Dark Theme */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(24px);
+  --theme-grid: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  --theme-glow: radial-gradient(circle at center, rgba(0, 180, 216, 0.15) 0%, transparent 50%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: all 0.4s ease !important;
+  transition-delay: 0s !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+select option {
+  background: var(--color-card-bg);
+  color: var(--color-text-main);
+}
+
+/* Base utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-secondary), #007A99); /* Изменили на вторичный для яркости */
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn-outline {
+  border: 2px solid var(--color-secondary);
+  color: var(--color-secondary);
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background-color: transparent;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-secondary);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #E74C3C, #C0392B);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  border: none;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border);
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+  background: var(--color-bg-light);
+  border-color: var(--color-text-muted);
+}
+
+@media print {
+  aside, header { display: none !important; }
+  .hide-on-print, button, a.btn-outline { display: none !important; }
+  body, html { 
+    background: white !important;
+    color: black !important;
+  }
+  body *, html * {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  div, main, section, article {
+    height: auto !important; 
+    overflow: visible !important;
+    position: static !important;
+  }
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    color: black !important;
+  }
+}

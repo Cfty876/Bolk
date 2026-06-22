@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Бульк | Mobile Pro</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'bg-light': '#05101A',
+            'primary': '#0A1E2F',
+            'secondary': '#00B4D8',
+            'accent': '#2ECC71',
+            'danger': '#E74C3C',
+            'warning': '#F39C12',
+            'card-bg': '#0B192C',
+            'border-color': '#1B354C',
+            'text-main': '#FFFFFF',
+            'text-muted': '#A0AAB2'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: var(--tg-viewport-height, 100vh);
+    }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #00B4D8, #007A99);
+      box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+      color: white;
+      transition: filter 0.2s, transform 0.2s;
+    }
+    .btn-primary:active { filter: brightness(1.1); transform: translateY(1px); }
+    .nav-item { transition: color 0.2s; }
+    .nav-item.active { color: #00B4D8; }
+  </style>
+</head>
+<body class="bg-bg-light text-text-main">
+
+  <!-- LOADING SPINNER -->
+  <div id="loader" class="flex-1 flex flex-col items-center justify-center">
+    <div class="w-10 h-10 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin mb-4"></div>
+    <div class="text-text-muted text-sm" id="loader-text">Загрузка интерфейса...</div>
+  </div>
+
+  <!-- APP CONTAINER -->
+  <div id="app" class="flex-col h-full" style="display: none;">
+    <!-- HEADER -->
+    <header class="bg-card-bg border-b border-border-color px-5 py-2 flex justify-between items-center z-10 shrink-0">
+      <div class="flex items-center gap-1 text-2xl font-black tracking-wide">
+        <img src="/logo-transparent.png" alt="БУЛЬК" class="w-16 h-16 object-contain">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#007A99] to-[#1E8449]">Бульк!</span>
+      </div>
+      <div class="bg-secondary/10 border border-secondary/20 text-secondary text-xs font-semibold px-3 py-1.5 rounded-md" id="user-badge">Загрузка...</div>
+    </header>
+
+    <!-- SCROLLABLE CONTENT -->
+    <div class="flex-1 overflow-y-auto px-5 pt-5 pb-24 hide-scrollbar">
+      
+      <!-- TAB 1: СВОДКА -->
+      <div id="tab-main" class="tab-content block animate-[fadeIn_0.2s_ease-out]">
+        <h2 class="text-2xl font-bold mb-4">Сводка</h2>
+
+        <!-- STATS GRID -->
+        <div class="grid grid-cols-2 gap-3 mb-5">
+          <div class="bg-card-bg border border-border-color rounded-xl p-4 flex flex-col">
+            <div class="text-text-muted text-xs uppercase tracking-wide mb-1">Всего рыбы (шт)</div>
+            <div class="text-2xl font-bold" id="stat-fish">0</div>
+          </div>
+          <div class="bg-card-bg border border-border-color rounded-xl p-4 flex flex-col">
+            <div class="text-text-muted text-xs uppercase tracking-wide mb-1">Садков</div>
+            <div class="text-2xl font-bold" id="stat-cages">0</div>
+          </div>
+        </div>
+
+        <!-- AI FORECASTS -->
+        <div class="bg-card-bg border border-border-color rounded-xl p-4 mb-6 relative overflow-hidden">
+          <div class="absolute -right-6 -top-6 w-24 h-24 bg-secondary/10 rounded-full blur-xl"></div>
+          <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wide mb-3 flex items-center gap-2">
+            <i data-lucide="brain" class="w-4 h-4 text-secondary"></i> ИИ Анализ Рисков
+          </h3>
+          <button id="btn-ai" onclick="requestAiAnalysis()" class="w-full bg-secondary/20 text-secondary border border-secondary/30 py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 mb-4">
+            <i data-lucide="sparkles" class="w-4 h-4"></i> Запросить анализ воды
+          </button>
+          <div id="ai-container" class="text-sm text-text-muted flex flex-col gap-3">Загрузка ИИ...</div>
+        </div>
+
+        <!-- ALERTS -->
+        <div class="bg-card-bg border border-border-color rounded-xl p-4 mb-6">
+          <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wide mb-3">Системный статус</h3>
+          <div id="alerts-container"></div>
+        </div>
+
+        <!-- TASKS -->
+        <h3 class="text-lg font-bold flex items-center gap-2 mb-3">
+          <i data-lucide="clock" class="text-secondary w-5 h-5"></i> Задачи на сегодня
+        </h3>
+        <div id="tasks-container" class="flex flex-col gap-3"></div>
+      </div>
+
+      <!-- TAB 2: САДКИ -->
+      <div id="tab-cages" class="tab-content hidden animate-[fadeIn_0.2s_ease-out]">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold">Садки</h2>
+          <button id="btn-add-cage" onclick="openModal('modal-cage')" class="hidden text-secondary bg-secondary/10 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-1">
+            <i data-lucide="plus" class="w-4 h-4"></i> Создать
+          </button>
+        </div>
+        <div id="cages-container" class="flex flex-col gap-4"></div>
+      </div>
+
+      <!-- TAB 3: ЖУРНАЛ -->
+      <div id="tab-journal" class="tab-content hidden animate-[fadeIn_0.2s_ease-out]">
+        <h2 class="text-2xl font-bold mb-4">Журнал фермы</h2>
+        <div class="bg-card-bg border border-border-color rounded-xl p-0 overflow-hidden mb-4">
+          <div id="journal-container" class="p-4"></div>
+        </div>
+        <!-- FAB (ADD JOURNAL) -->
+        <button id="fab-add" onclick="openModal('modal-add')" class="hidden fixed bottom-20 right-5 w-14 h-14 bg-gradient-to-br from-secondary to-[#007A99] rounded-full shadow-[0_4px_15px_rgba(0,180,216,0.4)] flex items-center justify-center z-40 hover:scale-105 transition-transform">
+          <i data-lucide="plus" class="text-white w-7 h-7"></i>
+        </button>
+      </div>
+      <!-- TAB 4: РАСПИСАНИЕ -->
+      <div id="tab-schedule" class="tab-content hidden animate-[fadeIn_0.2s_ease-out]">
+        <h2 class="text-2xl font-bold mb-4">Расписание</h2>
+        <div id="schedule-container" class="flex flex-col gap-4 pb-20"></div>
+        <!-- FAB (ADD SCHEDULE TASK) -->
+        <button id="fab-add-schedule" onclick="openModal('modal-schedule-add'); toggleScheduleFields();" class="fixed bottom-20 right-5 w-14 h-14 bg-gradient-to-br from-[#007A99] to-[#1E8449] rounded-full shadow-[0_4px_15px_rgba(0,122,153,0.4)] flex items-center justify-center z-40 hover:scale-105 transition-transform">
+          <i data-lucide="calendar-plus" class="text-white w-7 h-7"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bg-card-bg border-t border-border-color flex justify-around pb-[env(safe-area-inset-bottom)] shrink-0 z-50">
+      <div id="nav-main" onclick="switchTab('main', this)" class="nav-item active flex-1 py-3 flex flex-col items-center gap-1 cursor-pointer text-secondary bg-secondary/5">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[11px] font-semibold">Сводка</span>
+      </div>
+      <div id="nav-schedule" onclick="switchTab('schedule', this)" class="nav-item flex-1 py-3 flex flex-col items-center gap-1 cursor-pointer text-text-muted hover:bg-white/5">
+        <i data-lucide="calendar-days" class="w-5 h-5"></i>
+        <span class="text-[11px] font-semibold">План</span>
+      </div>
+      <div id="nav-cages" onclick="switchTab('cages', this)" class="nav-item flex-1 py-3 flex flex-col items-center gap-1 cursor-pointer text-text-muted hover:bg-white/5">
+        <i data-lucide="database" class="w-5 h-5"></i>
+        <span class="text-[11px] font-semibold">Садки</span>
+      </div>
+      <div id="nav-journal" onclick="switchTab('journal', this)" class="nav-item flex-1 py-3 flex flex-col items-center gap-1 cursor-pointer text-text-muted hover:bg-white/5 relative">
+        <i data-lucide="file-text" class="w-5 h-5"></i>
+        <span class="text-[11px] font-semibold">Журнал</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- MODALS -->
+
+  <!-- 1. ADD JOURNAL MODAL -->
+  <div id="modal-add" class="hidden fixed inset-0 bg-bg-light/80 backdrop-blur-sm z-50 flex items-end">
+    <div class="bg-card-bg w-full rounded-t-2xl border-t border-border-color p-6 pb-8 animate-[slideUp_0.3s_ease-out] max-h-[85vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-xl font-bold">Новая запись</h3>
+        <button onclick="closeModal('modal-add')" class="text-text-muted hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs text-text-muted mb-1.5 uppercase">Тип</label>
+          <select id="j-type" onchange="toggleJournalFields()" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none"><option value="FEEDING">Кормление</option><option value="VET">Вет-осмотр</option><option value="INSPECTION">Инцидент</option></select>
+        </div>
+        <div>
+          <label class="block text-xs text-text-muted mb-1.5 uppercase">Садок</label>
+          <select id="j-cage" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none"><option value="">Без привязки</option></select>
+        </div>
+        
+        <div id="j-feeding-container">
+          <div class="mb-4">
+            <label class="block text-xs text-text-muted mb-1.5 uppercase">Тип корма</label>
+            <input id="j-food" type="text" placeholder="Пеллетсы..." value="Пеллетсы форелевые 6мм" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+          </div>
+          <div>
+            <label class="block text-xs text-text-muted mb-1.5 uppercase">Объем (кг)</label>
+            <input id="j-amount" type="number" step="0.1" placeholder="10" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+          </div>
+        </div>
+
+        <div id="j-other-container" class="hidden">
+          <div class="mb-4">
+            <label class="block text-xs text-text-muted mb-1.5 uppercase">Заголовок</label>
+            <input id="j-title" type="text" placeholder="Например: Плановый осмотр..." class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+          </div>
+          <div>
+            <label class="block text-xs text-text-muted mb-1.5 uppercase">Падеж (шт) - Опционально</label>
+            <input id="j-mortality" type="number" placeholder="Например: 5" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs text-text-muted mb-1.5 uppercase">Описание</label>
+          <textarea id="j-desc" rows="3" placeholder="Дополнительная информация..." class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none"></textarea>
+        </div>
+        <button id="btn-save-journal" onclick="saveJournal()" class="btn-primary w-full py-3.5 rounded-lg font-bold text-[15px] mt-2">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ADD CAGE MODAL -->
+  <div id="modal-cage" class="hidden fixed inset-0 bg-bg-light/80 backdrop-blur-sm z-[100] flex items-end">
+    <div class="bg-card-bg w-full rounded-t-2xl border-t border-border-color p-6 pb-8 animate-[slideUp_0.3s_ease-out]">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-xl font-bold">Новый садок</h3>
+        <button onclick="closeModal('modal-cage')" class="text-text-muted hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs text-text-muted mb-1.5 uppercase">Название</label>
+          <input id="c-name" type="text" placeholder="Садок #5" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+        </div>
+        <div>
+          <label class="block text-xs text-text-muted mb-1.5 uppercase">Вид рыбы</label>
+          <input id="c-fish" type="text" placeholder="Лосось" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+        </div>
+        <button id="btn-save-cage" onclick="saveCage()" class="btn-primary w-full py-3.5 rounded-lg font-bold text-[15px]">Создать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MORTALITY MODAL -->
+  <div id="modal-mortality" class="hidden fixed inset-0 bg-bg-light/80 backdrop-blur-sm z-[110] flex items-center justify-center p-5">
+    <div class="bg-card-bg w-full max-w-sm rounded-2xl border border-border-color p-5 animate-[fadeIn_0.2s_ease-out]">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">Осмотр садка</h3>
+        <button onclick="closeModal('modal-mortality')" class="text-text-muted hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-4">
+        <p class="text-xs text-text-muted leading-tight">Был ли обнаружен падеж (мертвая рыба) при осмотре? Если нет, оставьте 0.</p>
+        <div>
+          <label class="block text-xs text-text-muted mb-1.5 uppercase">Количество (шт)</label>
+          <input id="m-qty" type="number" min="0" value="0" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+        </div>
+        <button id="btn-save-mortality" onclick="saveTaskMortality()" class="btn-primary w-full py-3.5 rounded-lg font-bold text-[15px]">Завершить задачу</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- 4. CHARTS MODAL -->
+  <div id="modal-chart" class="hidden fixed inset-0 bg-bg-light/80 backdrop-blur-sm z-[110] flex items-end">
+    <div class="bg-card-bg w-full rounded-t-2xl border-t border-border-color p-6 pb-10 h-[80vh] flex flex-col animate-[slideUp_0.3s_ease-out]">
+      <div class="flex justify-between items-center mb-5 shrink-0">
+        <h3 class="text-xl font-bold" id="chart-title">Графики</h3>
+        <button onclick="closeModal('modal-chart')" class="text-text-muted hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+      <div class="flex-1 min-h-0 relative">
+        <canvas id="cageChart"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 5. ADD SCHEDULE MODAL -->
+    <div id="modal-schedule-add" class="hidden fixed inset-0 bg-bg-light/80 backdrop-blur-sm z-[100] flex items-end">
+      <div class="bg-card-bg w-full rounded-t-2xl border-t border-border-color p-6 pb-8 animate-[slideUp_0.3s_ease-out] max-h-[85vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-5">
+          <h3 class="text-xl font-bold">Новая задача</h3>
+          <button onclick="closeModal('modal-schedule-add')" class="text-text-muted hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+        </div>
+        <div class="space-y-4">
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Тип</label>
+              <select id="sa-type" onchange="toggleScheduleFields()" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+                <option value="FEEDING">Кормление</option>
+                <option value="INSPECTION">Осмотр</option>
+                <option value="VET">Визит ветеринара</option>
+              </select>
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Садок</label>
+              <select id="sa-cage" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none"></select>
+            </div>
+          </div>
+          
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Частота</label>
+              <select id="sa-freq" onchange="toggleScheduleFields()" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+                <option value="DAILY">Ежедневно</option>
+                <option value="WEEKLY">Еженедельно</option>
+                <option value="ONCE">Единоразово</option>
+              </select>
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Время</label>
+              <input id="sa-time" type="time" value="08:00" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+            </div>
+          </div>
+
+          <div id="sa-weekly-container" class="hidden">
+            <label class="block text-xs text-text-muted mb-1.5 uppercase">День недели</label>
+            <select id="sa-day" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+              <option value="1">Понедельник</option>
+              <option value="2">Вторник</option>
+              <option value="3">Среда</option>
+              <option value="4">Четверг</option>
+              <option value="5">Пятница</option>
+              <option value="6">Суббота</option>
+              <option value="0">Воскресенье</option>
+            </select>
+          </div>
+
+          <div id="sa-once-container" class="hidden">
+            <label class="block text-xs text-text-muted mb-1.5 uppercase">Дата</label>
+            <input id="sa-date" type="date" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none text-sm">
+          </div>
+
+          <div id="sa-feeding-container">
+            <div class="mb-4">
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Тип корма</label>
+              <input id="sa-food" type="text" placeholder="Пеллетсы..." value="Пеллетсы форелевые 6мм" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Объем на кормление (кг)</label>
+              <input id="sa-amount" type="number" step="0.1" placeholder="10" value="10" class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+            </div>
+          </div>
+
+          <div id="sa-other-container" class="hidden">
+            <div class="mb-4">
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Название</label>
+              <input id="sa-title" type="text" placeholder="Например: Осмотр жабр..." class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+            </div>
+            <div>
+              <label class="block text-xs text-text-muted mb-1.5 uppercase">Описание</label>
+              <input id="sa-desc" type="text" placeholder="Например: Обратить внимание на активность..." class="w-full bg-bg-light border border-border-color rounded-lg px-4 py-3 text-white outline-none">
+            </div>
+          </div>
+
+          <button id="btn-save-schedule" onclick="saveTaskSchedule()" class="btn-primary w-full py-3.5 rounded-lg font-bold text-[15px] mt-2">Создать задачу</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  </style>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      
+      document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+      const btn = document.querySelector(`.bottom-nav-item[onclick="showTab('${tabId}')"]`);
+      if (btn) btn.classList.add('active');
+      
+      document.getElementById('top-nav').style.display = 'flex';
+    }
+
+    const tg = window.Telegram?.WebApp;
+    if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#05101A'); tg.setBackgroundColor('#05101A'); }
+
+    let cages = [], journals = [], alerts = [], aiForecasts = [], todayTasks = [], monthSchedule = [], employee = null;
+    let chartInstance = null;
+
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+      document.querySelectorAll('.nav-item').forEach(n => { n.classList.remove('active', 'text-secondary', 'bg-secondary/5'); n.classList.add('text-text-muted'); });
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      el.classList.remove('text-text-muted');
+      el.classList.add('active', 'text-secondary', 'bg-secondary/5');
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      
+      if (tabId === 'schedule') {
+        setTimeout(() => {
+          const todayStr = new Date().toISOString().split('T')[0];
+          const el = document.getElementById('day-' + todayStr);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    async function apiCall(method, path, body = null) {
+      const opts = { method, headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' } };
+      if (body) opts.body = JSON.stringify(body);
+      const finalUrl = method === 'GET' ? `${path}${path.includes('?') ? '&' : '?'}t=${Date.now()}` : path;
+      try { const r = await fetch(finalUrl, opts); return await r.json(); } catch(e) { return { error: e.message }; }
+    }
+
+    async function init() {
+      const user = tg?.initDataUnsafe?.user || { id: 5344256331, first_name: 'Пользователь' };
+      const auth = await apiCall('POST', '/api/tma/auth', { telegramId: user.id.toString(), firstName: user.first_name, lastName: user.last_name });
+      
+      if (!auth.success) { document.getElementById('loader-text').innerText = 'Ошибка авторизации'; return; }
+      employee = auth.employee;
+      document.getElementById('user-badge').innerText = employee.name;
+      
+      if (!employee.canViewJournal) {
+        document.getElementById('nav-journal').style.display = 'none';
+        document.getElementById('fab-add').classList.add('hidden');
+      } else {
+        document.getElementById('nav-journal').style.display = '';
+        document.getElementById('fab-add').classList.remove('hidden');
+      }
+      
+      if (!employee.canViewCages) {
+        document.getElementById('nav-cages').style.display = 'none';
+        document.getElementById('btn-add-cage').classList.add('hidden');
+      } else {
+        document.getElementById('nav-cages').style.display = '';
+        document.getElementById('btn-add-cage').classList.remove('hidden');
+      }
+      
+      if (!employee.canViewSchedule) {
+        document.getElementById('nav-schedule').style.display = 'none';
+        document.getElementById('fab-add-schedule').classList.add('hidden');
+      } else {
+        document.getElementById('nav-schedule').style.display = '';
+        document.getElementById('fab-add-schedule').classList.remove('hidden');
+      }
+
+      await loadData();
+      
+      document.getElementById('loader').classList.add('hidden');
+      document.getElementById('app').style.display = 'flex';
+      lucide.createIcons();
+    }
+
+    async function loadData() {
+      const data = await apiCall('GET', '/api/tma/data');
+      if (data.success) {
+        cages = data.cages || []; journals = data.journals || []; alerts = data.alerts || []; todayTasks = data.todayTasks || []; monthSchedule = data.monthSchedule || [];
+        aiForecasts = data.forecasts || [];
+      }
+      render();
+    }
+
+    let currentTaskId = null;
+    function handleTaskBtn(id, type) {
+      if (type === 'INSPECTION' || type === 'VET') {
+        currentTaskId = id;
+        document.getElementById('m-qty').value = '0';
+        openModal('modal-mortality');
+      } else {
+        markTaskComplete(id);
+      }
+    }
+
+    async function saveTaskMortality() {
+      const qty = parseInt(document.getElementById('m-qty').value) || 0;
+      const btn = document.getElementById('btn-save-mortality'); btn.innerText = 'Сохранение...'; btn.disabled = true;
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      await apiCall('POST', '/api/tasks/complete', { scheduleId: currentTaskId, mortalityQty: qty });
+      btn.innerText = 'Завершить задачу'; btn.disabled = false;
+      closeModal('modal-mortality');
+      await loadData();
+    }
+
+    async function resolveAlert(id) {
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      await apiCall('POST', '/api/tma/alerts/resolve', { id });
+      await loadData();
+    }
+
+    async function markTaskComplete(id) {
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      await apiCall('POST', '/api/tasks/complete', { scheduleId: id });
+      await loadData();
+    }
+
+    async function requestAiAnalysis() {
+      const btn = document.getElementById('btn-ai');
+      btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Анализируем...';
+      btn.disabled = true;
+
+      // Сбор данных
+      const chartData = []; // Упрощенный сбор данных для TMA
+      if (cages.length > 0 && cages[0].sensors) {
+        cages[0].sensors.forEach(sensor => {
+          if (sensor.telemetry && sensor.telemetry.length > 0) {
+             chartData.push({ type: sensor.type, lastValue: sensor.value });
+          }
+        });
+      }
+      
+      const payload = {
+        data: chartData.length > 0 ? chartData : { message: "Датчики пока не передали метрики.", farmSummary: cages.map(c => ({ name: c.name, fishType: c.fishType })) },
+        fishType: cages.length > 0 ? cages[0].fishType : 'Рыба'
+      };
+
+      const res = await apiCall('POST', '/api/ai-analysis', payload);
+      
+      btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4"></i> Запросить ИИ Анализ Рисков';
+      btn.disabled = false;
+      lucide.createIcons();
+      
+      if (res.error) {
+        tg?.showAlert('Ошибка ИИ: ' + res.error);
+      } else {
+        tg?.HapticFeedback?.notificationOccurred('success');
+        tg?.showAlert('Отчет успешно сгенерирован!');
+        await loadData(); // Reload forecasts
+      }
+    }
+
+    async function deleteAiForecast(id) {
+      try {
+        const btn = document.getElementById('del-btn-' + id);
+        if (btn) btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i>';
+
+        const res = await apiCall('DELETE', `/api/ai-forecasts/${id}`);
+        if (!res.error) {
+          tg?.HapticFeedback?.impactOccurred('medium');
+          await loadData();
+        } else {
+          tg?.showAlert('Ошибка удаления: ' + res.error);
+          if (btn) btn.innerHTML = '<i data-lucide="x" class="w-4 h-4"></i>';
+          lucide.createIcons();
+        }
+      } catch (e) {
+        tg?.showAlert('Ошибка: ' + e.message);
+      }
+    }
+
+    function showChart(cageId) {
+      const cage = cages.find(c => c.id === cageId);
+      if (!cage) return;
+      document.getElementById('chart-title').innerText = 'Метрики: ' + cage.name;
+      
+      const dataMap = new Map();
+      (cage.sensors || []).forEach(sensor => {
+        if (!sensor.telemetry) return;
+        sensor.telemetry.slice(0, 20).forEach(t => {
+          const timeKey = new Date(t.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          if (!dataMap.has(timeKey)) dataMap.set(timeKey, { time: timeKey });
+          const entry = dataMap.get(timeKey);
+          if (sensor.type === 'TEMP') entry.temp = t.value;
+          if (sensor.type === 'O2') entry.o2 = t.value;
+          if (sensor.type === 'PH') entry.ph = t.value;
+        });
+      });
+
+      const chartData = Array.from(dataMap.values()).sort((a, b) => a.time.localeCompare(b.time));
+
+      const labels = chartData.map(d => d.time);
+      const tData = chartData.map(d => d.temp);
+      const oData = chartData.map(d => d.o2);
+
+      const pData = chartData.map(d => d.ph);
+
+      openModal('modal-chart');
+      
+      const ctx = document.getElementById('cageChart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+      
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels.length ? labels : [],
+          datasets: [
+            { label: 'Температура (°C)', data: tData, borderColor: '#F39C12', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4, pointRadius: 4, pointHoverRadius: 6 },
+            { label: 'Кислород (мг/л)', data: oData, borderColor: '#00B4D8', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4, pointRadius: 4, pointHoverRadius: 6 },
+            { label: 'pH', data: pData, borderColor: '#9B59B6', backgroundColor: 'transparent', borderWidth: 3, tension: 0.4, pointRadius: 4, pointHoverRadius: 6 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#fff' } } },
+          scales: {
+            x: { ticks: { color: '#A0AAB2' }, grid: { color: '#1B354C' } },
+            y: { ticks: { color: '#A0AAB2' }, grid: { color: '#1B354C' } }
+          }
+        }
+      });
+    }
+
+    function render() {
+      // 1. STATS
+      let totalFish = 0;
+      cages.forEach(c => {
+        let bSum = 0;
+        if (c.fishes) c.fishes.forEach(f => bSum += (f.quantity || 0));
+        totalFish += bSum + (c.fishCount || 0);
+      });
+      document.getElementById('stat-fish').innerText = totalFish;
+      document.getElementById('stat-cages').innerText = cages.length;
+
+      // AI FORECASTS
+      const aiCont = document.getElementById('ai-container');
+      if (aiForecasts.length === 0) {
+        aiCont.innerHTML = '<div class="text-center opacity-70">Запустите анализ, чтобы получить прогноз.</div>';
+      } else {
+        aiCont.innerHTML = aiForecasts.map(f => {
+          const color = f.status === 'OK' ? '#2ecc71' : f.status === 'WARNING' ? '#f39c12' : '#e74c3c';
+          const bg = f.status === 'OK' ? 'rgba(46, 204, 113, 0.1)' : f.status === 'WARNING' ? 'rgba(243, 156, 18, 0.1)' : 'rgba(231, 76, 60, 0.1)';
+          const label = f.status === 'OK' ? '✓ В НОРМЕ' : f.status === 'WARNING' ? '⚠️ ВНИМАНИЕ' : '🚨 КРИТИЧЕСКИ';
+          
+          return `<div class="bg-bg-light border border-border-color rounded-xl p-3 relative">
+            <button id="del-btn-${f.id}" onclick="deleteAiForecast('${f.id}')" class="absolute top-2 right-2 text-text-muted hover:text-white p-1 z-20 cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+            <div class="flex items-center gap-2 mb-2">
+              <span style="background:${bg}; color:${color}; padding:2px 8px; border-radius:6px; font-size:10px; font-weight:bold;">${label}</span>
+              <span class="text-[10px] text-text-muted">${new Date(f.createdAt).toLocaleString()}</span>
+            </div>
+            <div class="text-text-main text-xs mb-2 leading-relaxed">${f.text}</div>
+            ${f.recommendation ? `<div class="bg-secondary/10 border-l-2 border-secondary px-3 py-2 rounded-r flex flex-col gap-1">
+              <span class="text-secondary font-bold text-[10px] uppercase">Рекомендация:</span>
+              <span class="text-text-main text-xs">${f.recommendation}</span>
+            </div>` : ''}
+          </div>`;
+        }).join('');
+      }
+
+      // 2. ALERTS
+      const alCont = document.getElementById('alerts-container');
+      if (alerts.length === 0) alCont.innerHTML = `<div class="flex items-center gap-3 bg-accent/10 border border-accent/20 p-3 rounded-lg"><i data-lucide="check-circle-2" class="text-accent w-6 h-6"></i><div><h4 class="text-accent font-semibold text-sm">Все в норме</h4><p class="text-text-muted text-xs">Тревог нет</p></div></div>`;
+      else alCont.innerHTML = alerts.map(a => `<div class="bg-danger/10 border border-danger/30 p-3 rounded-xl mb-2 flex justify-between items-center"><div class="flex items-center gap-3"><div class="bg-danger/10 p-2 rounded-lg text-danger"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div><div><h4 class="text-danger font-bold text-sm mb-0.5">Внимание</h4><p class="text-white text-xs leading-tight">${a.message}</p></div></div><button onclick="resolveAlert('${a.id}')" class="bg-danger text-white text-xs font-bold px-3 py-1.5 rounded-md shrink-0 ml-2 shadow-[0_0_10px_rgba(231,76,60,0.3)] hover:opacity-80 transition-opacity">Отметить</button></div>`).join('');
+
+      // 3. TASKS
+      const pendingTasks = todayTasks.filter(t => t.status !== 'COMPLETED');
+      const tsCont = document.getElementById('tasks-container');
+      if (pendingTasks.length === 0) tsCont.innerHTML = `<div class="text-center p-5 bg-card-bg border border-border-color rounded-xl text-text-muted text-sm">Задач нет</div>`;
+      else tsCont.innerHTML = pendingTasks.map(t => {
+        const isMissed = t.status === 'MISSED';
+        const color = isMissed ? 'danger' : 'secondary';
+        const icon = t.type === 'VET' ? 'syringe' : t.type === 'INSPECTION' ? 'eye' : 'fish';
+        const title = t.type === 'FEEDING' ? `Кормление: ${t.foodType || 'Корм'}, ${t.amountKg}кг` : (t.type === 'VET' ? `Вет: ${t.title}` : `Осмотр: ${t.title}`);
+        return `<div class="bg-bg-light border border-${isMissed ? 'danger/30' : 'border-color'} rounded-xl p-3 flex justify-between items-center mb-2">
+          <div class="flex items-center gap-3">
+            <div class="bg-${color}/10 p-2 rounded-lg text-${color}"><i data-lucide="${icon}" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-bold text-sm ${isMissed ? 'text-danger' : 'text-text-main'}">${t.time} - ${t.cageName}</div>
+              <div class="text-xs text-text-muted truncate max-w-[150px]">${title}</div>
+            </div>
+          </div>
+          <button onclick="handleTaskBtn('${t.id}', '${t.type}')" class="bg-${color} text-white text-xs font-bold px-3 py-1.5 rounded-md hover:opacity-80 transition-opacity">Отметить</button>
+        </div>`;
+      }).join('');
+
+      // 4. CAGES
+      const cgCont = document.getElementById('cages-container');
+      if (!employee.canViewCages) cgCont.innerHTML = `<div class="text-center p-5 text-text-muted">Нет доступа</div>`;
+      else {
+        cgCont.innerHTML = cages.map(c => {
+          const tS = c.sensors?.find(s => s.type === 'TEMP');
+          const oS = c.sensors?.find(s => s.type === 'O2');
+          return `
+            <div class="bg-card-bg border border-border-color rounded-xl p-4">
+              <div class="flex justify-between items-start mb-3">
+                <div>
+                  <h4 class="font-bold text-lg leading-tight">${c.name}</h4>
+                  <span class="inline-block bg-secondary/10 text-secondary text-[10px] font-bold px-2 py-0.5 rounded mt-1 uppercase">${c.fishType}</span>
+                </div>
+                <div class="text-right">
+                  <div class="font-bold">${c.fishCount} <span class="text-xs font-normal text-text-muted">шт</span></div>
+                </div>
+              </div>
+              
+              <div class="space-y-3 mb-4">
+                <div>
+                  <div class="flex justify-between text-xs mb-1">
+                    <span class="text-text-muted">Температура</span>
+                    <span class="font-bold ${tS && (tS.value < 8 || tS.value > 15) ? 'text-danger' : 'text-white'}">${tS?tS.value+'°C':'--'}</span>
+                  </div>
+                  <div class="h-1.5 w-full bg-border-color rounded-full overflow-hidden"><div class="h-full bg-secondary transition-all" style="width: ${tS ? Math.min(100, Math.max(0, ((tS.value - 5)/15)*100)) : 0}%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs mb-1">
+                    <span class="text-text-muted">Кислород</span>
+                    <span class="font-bold ${oS && oS.value < 6 ? 'text-danger' : 'text-accent'}">${oS?oS.value+' мг/л':'--'}</span>
+                  </div>
+                  <div class="h-1.5 w-full bg-border-color rounded-full overflow-hidden"><div class="h-full bg-accent transition-all" style="width: ${oS ? Math.min(100, Math.max(0, (oS.value/12)*100)) : 0}%"></div></div>
+                </div>
+              </div>
+
+              <div class="flex gap-2 mt-4">
+                <button onclick="showChart('${c.id}')" class="flex-1 bg-border-color text-text-muted hover:text-white py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors"><i data-lucide="line-chart" class="w-4 h-4"></i> Графики</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 5. JOURNAL
+      const jlCont = document.getElementById('journal-container');
+      if (!employee.canViewJournal) jlCont.innerHTML = `<div class="text-center py-4 text-text-muted">Нет доступа</div>`;
+      else if (journals.length === 0) jlCont.innerHTML = `<div class="text-center py-4 text-text-muted">Записей нет</div>`;
+      else jlCont.innerHTML = journals.map((j, i) => `<div class="flex gap-3 pb-3 mb-3 ${i !== journals.length-1 ? 'border-b border-border-color' : 'pb-0 mb-0'}"><div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${j.type==='FEEDING'?'bg-secondary/10 text-secondary':j.type==='VET'?'bg-danger/10 text-danger':'bg-warning/10 text-warning'}"><i data-lucide="${j.type==='FEEDING'?'database':j.type==='VET'?'syringe':'alert-triangle'}" class="w-5 h-5"></i></div><div><h4 class="font-bold text-sm mb-0.5">${j.title}</h4><p class="text-xs text-text-muted leading-snug">${j.description}</p><div class="text-[10px] text-text-muted mt-1.5 opacity-70">${new Date(j.createdAt).toLocaleString()}</div></div></div>`).join('');
+
+      // 6. SCHEDULE
+      const scCont = document.getElementById('schedule-container');
+      
+      const todayObj = new Date();
+      const todayStr = todayObj.toISOString().split('T')[0];
+      const nextWeekObj = new Date();
+      nextWeekObj.setDate(todayObj.getDate() + 6);
+      const nextWeekStr = nextWeekObj.toISOString().split('T')[0];
+
+      const activeDays = monthSchedule.filter(d => 
+        d.tasks && d.tasks.length > 0 && d.dateStr >= todayStr && d.dateStr <= nextWeekStr
+      );
+      
+      if (activeDays.length === 0) {
+        scCont.innerHTML = `<div class="text-center py-10 text-text-muted">Нет запланированных задач на ближайшую неделю</div>`;
+      } else {
+        
+        scCont.innerHTML = activeDays.map(d => {
+          const isToday = d.dateStr === todayStr;
+          const dateObj = new Date(d.dateStr);
+          const formattedDate = dateObj.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', weekday: 'short' });
+          
+          return `
+            <div id="day-${d.dateStr}" class="bg-card-bg border ${isToday ? 'border-secondary/50 shadow-[0_0_15px_rgba(0,180,216,0.1)]' : 'border-border-color'} rounded-xl p-4">
+              <h4 class="font-bold mb-3 ${isToday ? 'text-secondary' : 'text-text-main'} flex justify-between items-center">
+                <span class="capitalize">${formattedDate}</span>
+                ${isToday ? '<span class="bg-secondary/20 text-secondary text-[10px] px-2 py-0.5 rounded-full uppercase">Сегодня</span>' : ''}
+              </h4>
+              <div class="flex flex-col gap-2">
+                ${d.tasks.map(t => {
+                  const isMissed = t.status === 'MISSED';
+                  const isCompleted = t.status === 'COMPLETED';
+                  const color = isMissed ? 'danger' : (isCompleted ? 'accent' : 'secondary');
+                  const icon = t.type === 'VET' ? 'syringe' : t.type === 'INSPECTION' ? 'eye' : 'fish';
+                  const title = t.type === 'FEEDING' ? `Корм: ${t.foodType || ''}, ${t.amountKg}кг` : (t.type === 'VET' ? `Вет: ${t.title}` : `Осмотр: ${t.title}`);
+                  
+                  return `
+                    <div class="bg-bg-light border border-${isMissed ? 'danger/30' : 'border-color'} rounded-lg p-2.5 flex justify-between items-center">
+                      <div class="flex items-center gap-3">
+                        <div class="bg-${color}/10 p-1.5 rounded text-${color} shrink-0"><i data-lucide="${icon}" class="w-4 h-4"></i></div>
+                        <div class="min-w-0">
+                          <div class="font-bold text-xs ${isMissed ? 'text-danger' : (isCompleted ? 'text-accent opacity-70' : 'text-text-main')}">${t.time} - ${t.cageName}</div>
+                          <div class="text-[11px] text-text-muted truncate ${isCompleted ? 'line-through opacity-50' : ''}">${title}</div>
+                        </div>
+                      </div>
+                      ${!isCompleted ? `<button onclick="handleTaskBtn('${t.id}', '${t.type}')" class="bg-${color} text-white text-[10px] font-bold px-2 py-1.5 rounded hover:opacity-80 transition-opacity shrink-0 ml-2">Отметить</button>` : `<div class="text-accent shrink-0 ml-2"><i data-lucide="check-circle-2" class="w-5 h-5"></i></div>`}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        // Scroll to today if possible (only after initial load, skipped for simplicity or we can use IntersectionObserver)
+      }
+
+      document.getElementById('j-cage').innerHTML = `<option value="">Без привязки</option>` + cages.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      
+      const saCageSelect = document.getElementById('sa-cage');
+      if (saCageSelect) saCageSelect.innerHTML = cages.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      
+      toggleJournalFields();
+      lucide.createIcons();
+    }
+
+    function toggleJournalFields() {
+      const type = document.getElementById('j-type').value;
+      document.getElementById('j-feeding-container').classList.toggle('hidden', type !== 'FEEDING');
+      document.getElementById('j-other-container').classList.toggle('hidden', type === 'FEEDING');
+    }
+
+    async function saveJournal() {
+      const type = document.getElementById('j-type').value;
+      const cageId = document.getElementById('j-cage').value;
+      const desc = document.getElementById('j-desc').value;
+
+      const data = { type, cageId, description: desc };
+
+      if (type === 'FEEDING') {
+        data.foodType = document.getElementById('j-food').value;
+        data.amountKg = document.getElementById('j-amount').value;
+        if (!data.foodType || !data.amountKg) return tg?.showAlert('Заполните данные о корме');
+      } else {
+        data.title = document.getElementById('j-title').value;
+        data.mortalityQty = document.getElementById('j-mortality').value;
+        if (!data.title) return tg?.showAlert('Заполните заголовок записи');
+      }
+
+      const btn = document.getElementById('btn-save-journal');
+      btn.innerText = 'Сохранение...'; btn.disabled = true;
+
+      const res = await apiCall('POST', '/api/tma/journal', data);
+      
+      btn.innerText = 'Сохранить'; btn.disabled = false;
+      if (res.success) { 
+        tg?.HapticFeedback?.notificationOccurred('success'); 
+        closeModal('modal-add'); 
+        
+        document.getElementById('j-title').value = ''; 
+        document.getElementById('j-desc').value = ''; 
+        document.getElementById('j-amount').value = ''; 
+        document.getElementById('j-mortality').value = '';
+        
+        await loadData(); 
+      }
+      else tg?.showAlert('Ошибка: ' + res.error);
+    }
+
+    async function saveTaskSchedule() {
+      const type = document.getElementById('sa-type').value;
+      const freq = document.getElementById('sa-freq').value;
+      const cageId = document.getElementById('sa-cage').value;
+      const time = document.getElementById('sa-time').value;
+
+      if (!cageId) return tg?.showAlert('Выберите садок');
+
+      const data = { cageId, type, frequency: freq, time };
+
+      if (freq === 'WEEKLY') data.dayOfWeek = document.getElementById('sa-day').value;
+      if (freq === 'ONCE') {
+        if(!document.getElementById('sa-date').value) return tg?.showAlert('Выберите дату');
+        data.date = document.getElementById('sa-date').value;
+      }
+
+      if (type === 'FEEDING') {
+        data.foodType = document.getElementById('sa-food').value;
+        data.amountKg = document.getElementById('sa-amount').value;
+        if(!data.foodType || !data.amountKg) return tg?.showAlert('Заполните данные о корме');
+      } else {
+        data.title = document.getElementById('sa-title').value;
+        data.desc = document.getElementById('sa-desc').value;
+        if(!data.title) return tg?.showAlert('Заполните название задачи');
+      }
+
+      const btn = document.getElementById('btn-save-schedule'); 
+      btn.innerText = 'Создание...'; btn.disabled = true;
+
+      const res = await apiCall('POST', '/api/tma/tasks/create', data);
+      
+      btn.innerText = 'Создать задачу'; btn.disabled = false;
+
+      if (res.success) { 
+        tg?.HapticFeedback?.notificationOccurred('success'); 
+        closeModal('modal-schedule-add');
+        
+        // Reset inputs
+        document.getElementById('sa-title').value = '';
+        document.getElementById('sa-desc').value = '';
+        
+        await loadData(); 
+      }
+      else tg?.showAlert('Ошибка: ' + res.error);
+    }
+
+    function toggleScheduleFields() {
+      const type = document.getElementById('sa-type').value;
+      const freq = document.getElementById('sa-freq').value;
+
+      document.getElementById('sa-feeding-container').classList.toggle('hidden', type !== 'FEEDING');
+      document.getElementById('sa-other-container').classList.toggle('hidden', type === 'FEEDING');
+
+      document.getElementById('sa-weekly-container').classList.toggle('hidden', freq !== 'WEEKLY');
+      document.getElementById('sa-once-container').classList.toggle('hidden', freq !== 'ONCE');
+      
+      // Set default date to today for ONCE if empty
+      if (freq === 'ONCE' && !document.getElementById('sa-date').value) {
+        document.getElementById('sa-date').value = new Date().toISOString().split('T')[0];
+      }
+    }
+
+    async function saveJournal() {
+      const title = document.getElementById('j-title').value, desc = document.getElementById('j-desc').value;
+      if (!title || !desc) return tg?.showAlert('Заполните все поля');
+      const btn = document.getElementById('btn-save'); btn.innerText = 'Сохранение...'; btn.disabled = true;
+      const res = await apiCall('POST', '/api/tma/journal', { title, description: desc, type: document.getElementById('j-type').value, cageId: document.getElementById('j-cage').value });
+      btn.innerText = 'Сохранить в базу'; btn.disabled = false;
+      if (res.success) { tg?.HapticFeedback?.notificationOccurred('success'); closeModal('modal-add'); document.getElementById('j-title').value = ''; document.getElementById('j-desc').value = ''; await loadData(); }
+      else tg?.showAlert('Ошибка: ' + res.error);
+    }
+
+    async function saveCage() {
+      const name = document.getElementById('c-name').value, fishType = document.getElementById('c-fish').value;
+      if (!name || !fishType) return tg?.showAlert('Заполните название и вид рыбы');
+      const btn = document.getElementById('btn-save-cage'); btn.innerText = 'Создание...'; btn.disabled = true;
+      const res = await apiCall('POST', '/api/tma/cages', { name, fishType, volumeM3: 500, fishCount: 10000, avgWeightKg: 1.2 });
+      btn.innerText = 'Создать'; btn.disabled = false;
+      if (res.success) { tg?.HapticFeedback?.notificationOccurred('success'); closeModal('modal-cage'); document.getElementById('c-name').value = ''; document.getElementById('c-fish').value = ''; await loadData(); }
+      else tg?.showAlert('Ошибка: ' + res.error);
+    }
+
+    init();
+  </script>
+</body>
+</html>

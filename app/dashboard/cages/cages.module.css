@@ -1,0 +1,64 @@
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+}
+
+.illustration {
+  font-size: 6rem;
+  margin-bottom: 24px;
+  color: var(--color-secondary);
+  opacity: 0.9;
+  filter: drop-shadow(0 10px 20px rgba(0,180,216,0.2));
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--color-text-main);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 40px;
+  max-width: 550px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+}
+
+.btnLarge {
+  background: var(--color-card-bg);
+  border: 2px dashed var(--color-secondary);
+  padding: 30px 40px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.btnLarge:hover {
+  background: rgba(0, 180, 216, 0.05);
+  transform: translateY(-5px);
+  border-style: solid;
+  box-shadow: 0 10px 25px rgba(0,180,216,0.1);
+}
+
+.btnIcon {
+  font-size: 2.5rem;
+}

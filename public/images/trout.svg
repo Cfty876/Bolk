@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 90">
+<!-- SVG created with Arrow, by QuiverAI (https://quiver.ai) -->
+  <style type="text/css">.cls-0 {fill:#003468;}
+.cls-1 {fill:#005793;}
+.cls-2 {fill:url(#SVGID_1_);}
+.cls-3 {fill:#006FAA;}
+.cls-4 {fill:#5EBADD;}
+.cls-5 {fill:#0183AA;}
+.cls-6 {fill:#007AAC;}
+.cls-7 {fill:#EEAFB5;}
+.cls-8 {fill:#009B9E;}
+.cls-9 {fill:#C27D91;}
+.cls-10 {fill:#FFFFFF;}
+.cls-11 {fill:#C98694;}
+.cls-12 {fill:none;stroke:#003468;stroke-width:0.8986;stroke-linecap:round;stroke-miterlimit:10;}
+.cls-13 {fill:#F3BBC1;}
+.cls-14 {fill:#CA7C90;}
+.cls-15 {fill:#BDDBDC;}
+.cls-16 {fill:#57ABB7;}
+.cls-17 {fill:#009B93;}
+.cls-18 {fill:#CB8895;}
+.cls-19 {fill:#BF798E;}
+.cls-20 {fill:#B9BECE;}
+.cls-21 {fill:#006EA4;}
+.cls-22 {fill:#0185AD;}
+.cls-23 {fill:#1E3969;}
+.cls-24 {fill:#DE98A1;}
+.cls-25 {fill:#008095;}
+.cls-26 {fill:none;stroke:#003468;stroke-width:0.8686;stroke-miterlimit:10;}
+.cls-27 {fill:#008890;}
+.cls-28 {fill:none;stroke:#003468;stroke-width:0.8957;stroke-linecap:round;stroke-miterlimit:10;}
+.cls-29 {fill:#193969;}</style>
+  <path class="cls-0" d="m62.5 29.2c1.3-0.6 12.3-10.6 14.8-10.4l0.2 0.1c0.4-0.1 1.5 1.6 3.2 3.4 3.2 3.3 8.4 5.9 8.1 6.8-0.1 0.5-3.6 1.7-3.4 2.3 0.1 0.4-8.6 0.8-12.3 0.4-5.3-0.5-11.5-2.2-10.6-2.6z"/>
+  <path class="cls-1" d="m67.4 28.1c-0.4-0.6 7.6-6.7 10.7-8.8l0.7 0.7-7.6 8.2c3.8-0.2 9.4-4.4 9.2-5l-5.8 5.5c3.2 0.7 7.2-2.7 8.6-3.3l-4.2 4.1c2.1-0.1 5.7-1.1 6.6-1.9 2.2 1 3.4 1.8 3.1 2.2-0.6 0.7-3.4 1.7-3.4 1.7s-10-0.7-17.9-3.4z"/>
+  <path class="cls-0" d="m122.6 37.5c3.3-1.5 14.2-9.6 20.1-9.7v0.3c0.4 4.4-2.1 11.2-3.7 15.2-0.9 2.2-0.4 2.8 0 3.9l-4.6-2.3-11.8-7.4z"/>
+  <linearGradient id="SVGID_1_" x1="89.77" x2="88.46" y1="33.4" y2="14.67" gradientTransform="matrix(1 0 0 -1 0 89)" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#EDAAB4" offset=".2997"/>
+    <stop stop-color="#BC748A" offset="1"/>
+  </linearGradient>
+  <path class="cls-2" d="m93.8 58.7c2.3 1.8 11 7 13.9 6.9 1.7 0 1.3-1.2 2.7-5.7 0.9-2.8 4-6.3 2.2-7.1l-3.4 0.3-10.3 3.7-5.1 1.9z"/>
+  <path class="cls-9" d="m98.6 59.3c4.8-0.2 10.3-5.9 14.3-6.3 0.8 0 0.5-0.5-1.3-0.2-3 0.4-5.7 2.2-8.8 3.2-3.1 1.2-8.7 2.5-8.7 2.6 0.9 1.4 10.6 7 13.7 7-5.9-2.8-9.3-5.6-9.2-6.3z"/>
+  <path class="cls-0" d="m121.1 52.9c1.3 0.1 11.8 8.9 21.5 9.9l0.2-6.7-10.5-6.2-6.2 1-5 2z"/>
+  <path class="cls-1" d="m126.9 51.6c1.9 2.2 8.5 8 15.8 10.9 0.5-7-4.4-15.3-4.2-16.5-0.3-0.6-9.7 0.2-10.6-0.3l-1 5.9z"/>
+  <path class="cls-1" d="m127.4 41-3.8-2.7c3-1.5 7.8-5.6 19.1-10.2 0.6 4.2-2 11.3-4 15.9-0.2 0.7-0.3 1.2-0.2 1.8l-9.7 0.1-1.4-4.9z"/>
+  <path class="cls-5" d="m128.2 43.2-0.3 2.7h10.5c-0.8-1 2.8-5.9 3.8-12.2-3.6 0.9-12.5 5.5-14 7.2v2.3z"/>
+  <path class="cls-3" d="m21.4 56.5c12.8 2.5 20.6 6 40.5 6 10.9 0 18.1-0.5 31-3.1 11-2.3 13.4-6.7 22.4-7.3 5.2-0.2 7.4 1.2 8.2 1.1 3.5-0.3 5.8-3.3 5.7-6.9-0.1-1.8-0.3-4.8-3.2-6.7-1.1-0.8-2.3-1.3-2.6-1.2-2 1-3.3 1.8-7.9 1.4-4.5-0.4-15.3-3.2-22-5-9.6-2.3-17.4-4.3-29.5-4.3-14.3 0-27.6 3.1-32.6 4.6l-12.6 5.9 2.6 15.5z"/>
+  <path class="cls-4" d="m31.3 35.4c0.4 0.8 1.2 1.1 1.4 1.2 5.5-1.2 17-3.8 33.4-4 17.9-0.1 31.1 3.8 45.2 6.4l-5.3-1.4c-7.4-1.5-15.5-5-30.4-6.3-11.6-0.8-20-1-34.6 2l-9.7 2.1z"/>
+  <linearGradient id="SVGID_00000054236413564127443220000008550104875537575076_" x1="73.65" x2="73.65" y1="45.62" y2="29.81" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#65AFE4" offset="0"/>
+    <stop stop-color="#207AC0" offset="1"/>
+  </linearGradient>
+  <path d="m24.9 55.2c4.7-0.1 12.1-10 12.1-10 17.9 0.8 39.8 1.4 50.4 1.8 11.6 0.4 22.7 0.1 41.8-0.7 0.1 1.1-0.3 3.6-1.7 5.3-4.4-1.5-6.5-2-11.7-1.7-5.8 0.3-8.8 1.5-13.1 3.1-5.5 2-12.7 3.6-15.7 4-7.9 1.2-19 2.1-32.6 1-7.5-0.5-14.2-0.6-19.5-2l-10-0.8z" fill="url(#SVGID_00000054236413564127443220000008550104875537575076_)"/>
+  <path class="cls-8" d="m38.5 43.6c26.9-0.4 52.3 0.8 90.7 1v0.9c-17.1 0-57.3-1.6-90.7 0.1v-2z"/>
+  <path class="cls-7" d="m37.4 41.4c9.1-0.9 23.2-1.4 28.8-1.2 22.2 0.3 37.9 2.4 63 4.2v0.9c-19.3-0.4-34.3-1.7-47.6-4.3-16.4-0.8-29.7-0.8-42.4 0.5l-1.8-0.1z"/>
+  <path class="cls-0" d="m109.7 37.6c1.2 0.1 3.2 0.3 3.1-1.4s-1.4-3.3-4.8-2.1c-3.5 1.1-4.9 1.8-8.1 0.8l-14.5-3.4 0.2-0.1c-0.2 0.1 2.6-1.8 5.2-0.5l18.9 6.7z"/>
+  <path class="cls-0" d="m8.1 46.3c1 0.7 1-0.2 3.3 0.3 2.4 0.3 5.5 2.8 5.8 2.9-3.4 0.1-5.6-0.1-6.8-0.8-1.7-1-3.6-1-3.2 0.3l2.8 0.6 8.1 0.8 1 0.6 6 6c5 0.5 9.8 0 12.5-4.2 1.6-3.1 2.6-5.6 2-7.7l-2.4-3.7c-1.1-2-4.1-4.3-5.8-5.8-0.5-0.5 0.7-0.5 0-0.6 9.2-2.4 20-4.5 31.6-4.4-12.5-2.2-38.3 3.9-53.8 11.8-1.8 1.2-2.6 3-1.1 3.9z"/>
+  <linearGradient id="SVGID_00000088116595029032935070000006675296455561039380_" x1="25.81" x2="28.34" y1="34.06" y2="39.83" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#5CB0DD" offset="0"/>
+    <stop stop-color="#64BBEC" offset="1"/>
+  </linearGradient>
+  <path d="m21.8 41c1.4-1.8 4.6-2 7.1-2.4 3.2-0.6 5.2-0.1 7.7 2.8l0.3 0.2h-2.4l-2.5 1c-1.1-0.6-2.1-1.5-1.8 0.4l1.2 8.9-4.3 2.6-3 0.1-4.1-6.6 1.8-7z" fill="url(#SVGID_00000088116595029032935070000006675296455561039380_)"/>
+  <path class="cls-5" d="m22.8 43.4 5.2-1.5h1c1 0.6 2.7 4.6 1.1 6.6-1.4 2.1-3.5 6.7-5 6l-5.4-5 3.1-6.1z"/>
+  <path class="cls-3" d="m7.1 48.6c0.5-0.2 1.8-0.2 2.4 0.4 1.6 3 10.5 6 15.5 5.5v2.5c-7.9-1.3-18-4.6-17.9-8.4z"/>
+  <path class="cls-25" d="m21.9 41c0.1 0.4 0.7 2.1 0.7 2.1l4.4-0.9c-4-0.8 3.4-0.7 4-0.6 0.6 0.5 1.6 0.5 1.9 0.3 0.8-0.5 0.2-0.5 3.7-0.4-2-2.5-3.5-3.6-7.9-3l-4.3 0.9c-1 0.3-2.2 1.1-2.5 1.6z"/>
+  <linearGradient id="SVGID_00000007423667186506129800000011751120326018593126_" x1="34.56" x2="32.79" y1="39.32" y2="51.57" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#DD9BA5" offset=".2997"/>
+    <stop stop-color="#CE8798" offset="1"/>
+  </linearGradient>
+  <path d="m26.9 54.6c5.1-0.6 6-4.6 5.2-8.2-0.5-2-2.9-4.7-1.5-4.7 1.3-0.1 1.9 0.9 2.6 0.4 1.3-1 1.4-0.5 3.4-0.6 0.8 1 2.9 4 2.6 4.9-0.5 2-2.5 5.5-3.5 6-2.3 1.5-4.8 2.1-8.8 2.2z" fill="url(#SVGID_00000007423667186506129800000011751120326018593126_)"/>
+  <path class="cls-7" d="m29 54.5c4.5-0.6 7.9-3.4 10.1-8.1 0 2.6-2.1 5.6-3.7 6.6-1.9 1.2-5.7 2-8.5 1.9l2.1-0.4z"/>
+  <path class="cls-26" d="m17.9 45.1c-2-1.5 0-5.1 3-4 2.6 1 1.8 4.8-1.3 4.5l-1.7-0.5z"/>
+  <path class="cls-27" d="m14.4 45c-1.3-0.6-3.8 1.1-2.2 1.1 3.9 0.9 6.4 4 9 5.4 1 0.5 3 0.7 2.8 0.1-1.1-3.2-6.8-5.2-9.6-5.6 1.7 0 2.5-0.3 2.5-0.3l-2.5-0.7z"/>
+  <linearGradient id="SVGID_00000155856864637474569240000007305474647609149351_" x1="71.24" x2="84.65" y1="24.36" y2="24.36" gradientTransform="matrix(1 0 0 -1 0 89)" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#006DA7" offset="0"/>
+    <stop stop-color="#003A76" offset="1"/>
+  </linearGradient>
+  <path d="m71.1 62c2.1 2.5 6.8 6.9 12 8.2 1.8 0.5 1.5 0.2 1.4-4 0-2.3-0.4-5.1-2.9-5.6l-5.4 0.5-5.1 0.9z" fill="url(#SVGID_00000155856864637474569240000007305474647609149351_)"/>
+  <linearGradient id="SVGID_00000183068474262157411500000011005964794970350534_" x1="78.19" x2="79.29" y1="28.02" y2="20.21" gradientTransform="matrix(1 0 0 -1 0 89)" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#538EBC" offset=".1173"/>
+    <stop stop-color="#006FAA" offset=".6259"/>
+  </linearGradient>
+  <path d="m74 61.5c2.6-0.6 9.1-2 10.5 2.5 0.1 1.1 0.4 5 0 5.1-0.9 0.3-7.3-2.6-11.1-7.2l0.6-0.4z" fill="url(#SVGID_00000183068474262157411500000011005964794970350534_)"/>
+  <path class="cls-6" d="m74.4 61.5-0.3 0.2c0.9 1.3 7.1 6.3 10.5 7.4 0.4 0.3-0.1-1.6 0-2.5-4-2-6.7-3.7-10.2-5.1z"/>
+  <linearGradient id="SVGID_00000161597491659628149240000014291675144027174309_" x1="45.19" x2="45.89" y1="36.21" y2="30.41" gradientTransform="matrix(1 0 0 -1 0 89)" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#DA98A6" offset="0"/>
+    <stop stop-color="#C77D93" offset="1"/>
+  </linearGradient>
+  <path d="m38.6 53.6c-0.7 0-1.6 1.5-0.2 2.6 1.2 1.2 8.2 3.7 11.1 3.5 2.9-0.1 5.1-3.1 6-4.3 0.6-1 0.4-1.8 0-1.9-4.1-1.5-9.5 0-13.3 0.2l-3.6-0.1z" fill="url(#SVGID_00000161597491659628149240000014291675144027174309_)"/>
+  <path class="cls-7" d="m40.1 54.4 9.3-0.7c4-0.1 5.7-0.5 6.2-0.1 0.3 0.3 0.4 1.3-1 2.5-0.2-1.6-1-2.2-10.6-1.7h-3.9z"/>
+  <path class="cls-28" d="m26.2 54.6c4.5-0.2 6.9-4 5.7-8.2-1-3.4-3.2-4.7-0.5-4.5"/>
+  <path class="cls-7" d="m17.9 43.6c0 1.6 1.8 2.3 3.1 1.4 0.9-0.5 1.4-2.9-0.6-3.4-1.5-0.2-2.7 0.9-2.5 2z"/>
+  <path class="cls-23" d="m18.4 43.1c-0.3 1.5 1.5 2.3 2.5 1.3 0.6-0.8 0.5-2.2-0.9-1.9-1.4 0-1.4 0.9-1.6 0.6z"/>
+  <path class="cls-10" d="m19 43 0.7 0.4 0.3-0.9c-0.5-0.1-1 0-1 0.5z"/>
+  <polygon class="cls-10" points="20 42.7 20.2 43.4 20.9 43.1 20.6 42.2"/>
+  <path class="cls-0" d="m13.5 43c0 1 1.4 1 1.5 0-0.1-0.8-1.3-0.9-1.5 0z"/>
+  <path class="cls-26" d="m14.6 45.6c3 0.4 8.4 2.4 9.3 5.6 0.3 0.8-1.9 0.9-3.7-0.3l-2.5-1.8c-1.6-1.2-3.6-2.6-6.8-3"/>
+  <path class="cls-12" d="m39.5 53.7c4.4 0 12.1-2 15.2-0.6"/>
+  <path class="cls-5" d="m127.5 40.9c3.1-3.9 9.6-9.3 15.2-12.5-5.1 0.7-13 6.8-16.1 11.2l0.9 1.3z"/>
+  <path class="cls-25" d="m128.2 43.4c4-1 9.5-3.5 10.3-6.8-3.3 2-5.4 3.4-10.4 6.4l0.1 0.4z"/>
+  <path class="cls-29" d="m19.1 42.7"/>
+  <path class="cls-24" d="m25.1 42.9c0 1 1.5 1.2 1.8 0.1 0-1-1.7-1.3-1.8-0.1z"/>
+  <circle class="cls-24" cx="27.6" cy="46.7" r=".8"/>
+  <circle class="cls-16" cx="26.7" cy="52.2" r=".4"/>
+  <ellipse class="cls-21" cx="24.6" cy="45.5" rx=".6" ry=".6"/>
+  <circle class="cls-21" cx="24.1" cy="47.5" r=".5"/>
+  <circle class="cls-25" cx="32.2" cy="40.4" r="1"/>
+  <path class="cls-0" d="m28.4 38.1c0 1.3 2.1 1.5 2.2 0-0.1-1.1-2.1-1.2-2.2 0z"/>
+  <circle class="cls-0" cx="26.1" cy="38.5" r=".5"/>
+  <circle class="cls-0" cx="24.2" cy="40.5" r=".6"/>
+  <circle class="cls-0" cx="27.9" cy="40.6" r=".5"/>
+  <linearGradient id="SVGID_00000000900574300159779930000017989220348643056959_" x1="79.02" x2="79.41" y1="25.24" y2="31.45" gradientTransform="matrix(1 0 0 -1 0 89)" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#DF9BA5" offset=".2997"/>
+    <stop stop-color="#EEAFB5" offset="1"/>
+  </linearGradient>
+  <path d="m75 61.5c4.9-0.6 9.4-2.1 9.5 3-2.4-1.8-5.3-2.9-9.5-3z" fill="url(#SVGID_00000000900574300159779930000017989220348643056959_)"/>
+  <path class="cls-1" d="m127.9 48.9c6.7 1.5 9.3 4.8 13.8 7l0.4 2.3-0.2 3.8c-5.3-1.5-13.4-8.3-15-10.5l1-2.6z"/>
+  <path class="cls-0" d="m128.5 50.5c2.4 2.5 4 4 8.7 4.5-2.3-1.6-6.6-4.9-8.6-6l-0.1 1.5z"/>
+  <ellipse class="cls-24" cx="78.1" cy="49.1" rx="1.3" ry="1"/>
+  <ellipse class="cls-18" cx="94.2" cy="49.1" rx="1.3" ry="1"/>
+  <ellipse class="cls-24" cx="81.8" cy="55.6" rx="1.3" ry=".9"/>
+  <ellipse class="cls-24" cx="68.6" cy="54.6" rx="1.3" ry="1"/>
+  <ellipse class="cls-24" cx="107.2" cy="48.6" rx="1.4" ry="1"/>
+  <ellipse class="cls-19" cx="42.6" cy="41.1" rx="1.3" ry="1"/>
+  <ellipse class="cls-24" cx="65.1" cy="32.1" rx="1.3" ry="1"/>
+  <ellipse class="cls-24" cx="62.6" cy="37.2" rx=".9" ry=".9"/>
+  <ellipse class="cls-24" cx="73.9" cy="32.9" rx="1.3" ry="1"/>
+  <ellipse class="cls-7" cx="76.7" cy="39.2" rx="1" ry=".9"/>
+  <ellipse class="cls-24" cx="81.9" cy="33.7" rx=".9" ry=".9"/>
+  <ellipse class="cls-7" cx="57.8" cy="32.2" rx="1.3" ry=".9"/>
+  <ellipse class="cls-20" cx="58.8" cy="35.7" rx=".7" ry=".7"/>
+  <ellipse class="cls-24" cx="56.9" cy="47.7" rx="1.3" ry="1"/>
+  <ellipse class="cls-11" cx="59.8" cy="40.5" rx="1.1" ry="1"/>
+  <ellipse class="cls-24" cx="40.8" cy="34.5" rx=".8" ry=".8"/>
+  <ellipse class="cls-17" cx="53.1" cy="33.1" rx="1.1" ry="1"/>
+  <ellipse class="cls-0" cx="45.3" cy="37.4" rx="1.2" ry="1"/>
+  <circle class="cls-0" cx="41.4" cy="37.7" r=".8"/>
+  <circle class="cls-0" cx="38.6" cy="38.4" r=".8"/>
+  <circle class="cls-0" cx="36.1" cy="36.6" r=".8"/>
+  <ellipse class="cls-0" cx="38.2" cy="35.2" rx=".6" ry=".6"/>
+  <ellipse class="cls-0" cx="43.5" cy="34.5" rx=".6" ry=".6"/>
+  <ellipse class="cls-0" cx="46.5" cy="33.9" rx=".6" ry=".6"/>
+  <ellipse class="cls-0" cx="49.5" cy="35.2" rx=".9" ry=".8"/>
+  <ellipse class="cls-0" cx="54.5" cy="36.6" rx="1.4" ry="1"/>
+  <ellipse class="cls-0" cx="50.3" cy="38.8" rx="1.1" ry="1"/>
+  <ellipse class="cls-0" cx="62.1" cy="34" rx=".9" ry=".8"/>
+  <ellipse class="cls-0" cx="67.3" cy="34.2" rx=".9" ry=".9"/>
+  <ellipse class="cls-0" cx="69.8" cy="37.1" rx="1.3" ry="1"/>
+  <ellipse class="cls-21" cx="65.8" cy="36.7" rx=".7" ry=".7"/>
+  <ellipse class="cls-21" cx="72.4" cy="39.7" rx=".7" ry=".8"/>
+  <ellipse class="cls-0" cx="75.9" cy="35.9" rx="1.3" ry="1"/>
+  <ellipse class="cls-0" cx="77.9" cy="33.7" rx=".7" ry=".7"/>
+  <ellipse class="cls-0" cx="80.7" cy="36.9" rx="1.2" ry="1"/>
+  <ellipse class="cls-0" cx="86.1" cy="37.9" rx="1.3" ry="1"/>
+  <ellipse class="cls-6" cx="89.6" cy="35.4" rx=".6" ry=".6"/>
+  <circle class="cls-0" cx="91.5" cy="38.4" r=".9"/>
+  <ellipse class="cls-0" cx="96.5" cy="37.2" rx="1.1" ry="1"/>
+  <ellipse class="cls-0" cx="97.8" cy="40.1" rx=".9" ry=".9"/>
+  <ellipse class="cls-0" cx="102.5" cy="40.7" rx="1.4" ry="1"/>
+  <circle class="cls-21" cx="102.6" cy="38" r=".6"/>
+  <circle class="cls-0" cx="107.4" cy="40.3" r=".9"/>
+  <circle class="cls-0" cx="110.4" cy="40.9" r=".7"/>
+  <circle class="cls-0" cx="115.4" cy="41.7" r="1.2"/>
+  <circle class="cls-0" cx="121" cy="41.7" r=".9"/>
+  <circle class="cls-0" cx="124.7" cy="41.2" r=".7"/>
+  <circle class="cls-21" cx="93.9" cy="41.2" r=".6"/>
+  <circle class="cls-17" cx="82.4" cy="40.9" r=".7"/>
+  <circle class="cls-16" cx="68.7" cy="48.5" r=".5"/>
+  <ellipse class="cls-1" cx="42.7" cy="48.1" rx="1.2" ry="1"/>
+  <circle class="cls-1" cx="46.7" cy="49.2" r=".8"/>
+  <ellipse class="cls-0" cx="51.8" cy="48.9" rx="1.3" ry="1"/>
+  <circle class="cls-0" cx="62.4" cy="49.1" r=".8"/>
+  <circle class="cls-0" cx="65.5" cy="50.6" r=".8"/>
+  <circle class="cls-0" cx="61.8" cy="55.5" r=".8"/>
+  <ellipse class="cls-0" cx="58.1" cy="51.6" rx="1.3" ry="1"/>
+  <ellipse class="cls-0" cx="72.6" cy="51" rx="1.3" ry="1"/>
+  <circle class="cls-22" cx="82.3" cy="50.6" r=".7"/>
+  <circle class="cls-22" cx="90.4" cy="52.2" r=".8"/>
+  <circle class="cls-17" cx="86.9" cy="49.1" r=".9"/>
+  <circle class="cls-21" cx="99.3" cy="50.4" r="1"/>
+</svg>

@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name            String?
+  createdAt       DateTime @default(now())
+  notifyO2        Boolean  @default(true)
+  allowAiVideo    Boolean  @default(true)
+  autoWeeklyReport Boolean @default(false)
+  
+  // Eco-Mission Settings
+  ecoTargetRelease Int     @default(50000)
+  ecoReleasedCount Int     @default(0)
+  isEcoPublic      Boolean @default(false)
+
+  // IoT Thresholds
+  minO2Threshold   Float   @default(6.0)
+  minTempThreshold Float   @default(8.0)
+  maxTempThreshold Float   @default(15.0)
+
+  // TMA Settings
+  isTmaEnabled     Boolean @default(false)
+  tmaToken         String? @unique
+  tmaAllowJournals Boolean @default(true)
+  tmaAllowCages    Boolean @default(true)
+  tmaAllowSchedule Boolean @default(true)
+  tmaNotifications Boolean @default(true)
+  
+  employees        Employee[]
+}
+
+model Employee {
+  id          String   @id @default(cuid())
+  name        String
+  telegramId  String   @unique
+  createdAt   DateTime @default(now())
+  
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+}
+
+model Cage {
+  id        String   @id @default(cuid())
+  name      String
+  status    String   @default("GOOD") // GOOD, WARNING, CRITICAL
+  fishCount Int      @default(0)
+  fishType  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sensors   Sensor[]
+  fishes    FishBatch[]
+  journal   JournalEntry[]
+  taskSchedules TaskSchedule[]
+  feedLogs  FeedLog[]
+}
+
+model Sensor {
+  id          String   @id @default(cuid())
+  type        String   // TEMP, O2, PH
+  value       Float
+  secretToken String   @unique @default(uuid())
+  lastSeen    DateTime?
+  cageId      String
+  cage        Cage     @relation(fields: [cageId], references: [id])
+  createdAt   DateTime @default(now())
+  telemetry   Telemetry[]
+}
+
+model Telemetry {
+  id        String   @id @default(cuid())
+  sensorId  String
+  value     Float
+  createdAt DateTime @default(now())
+  sensor    Sensor   @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+}
+
+model FishBatch {
+  id        String   @id @default(cuid())
+  species   String   // Форель, Осетр и т.д.
+  quantity  Int
+  avgWeight Float    // Средний вес в граммах
+  plantedAt DateTime @default(now())
+  
+  // Release Tracking
+  status          String   @default("GROWING") // GROWING, RELEASED, DEAD
+  releasedAt      DateTime?
+  releaseRiver    String?
+  riverTemp       Float?
+  tagSequence     String?
+  
+  cageId    String
+  cage      Cage     @relation(fields: [cageId], references: [id])
+  weightLogs WeightLog[]
+}
+
+model VideoRoom {
+  code      String   @id // The 4 digit PIN
+  offer     String?
+  answer    String?
+  createdAt DateTime @default(now())
+}
+model JournalEntry {
+  id          String   @id @default(cuid())
+  type        String   // 'FEEDING', 'VET', 'INSPECTION'
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  cageId      String?
+  cage        Cage?    @relation(fields: [cageId], references: [id])
+}
+
+model Alert {
+  id          String   @id @default(cuid())
+  message     String
+  severity    String   // 'WARNING', 'CRITICAL'
+  resolved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model TaskSchedule {
+  id        String   @id @default(cuid())
+  cageId    String
+  type      String   // 'FEEDING', 'VET', 'INSPECTION'
+  frequency String   // 'DAILY', 'WEEKLY', 'ONCE'
+  time      String   // e.g., "08:30"
+  
+  // Constraints
+  date      DateTime? @db.Date // Only for ONCE
+  dayOfWeek Int?      // 0-6 (Sun-Sat) Only for WEEKLY
+  
+  // Payload
+  title     String?   // For VET/INSPECTION
+  desc      String?   // For VET/INSPECTION
+  foodType  String?   // For FEEDING
+  amountKg  Float?    // For FEEDING
+  
+  createdAt DateTime @default(now())
+  cage      Cage     @relation(fields: [cageId], references: [id], onDelete: Cascade)
+  records   TaskRecord[]
+}
+
+model TaskRecord {
+  id           String   @id @default(cuid())
+  scheduleId   String
+  date         DateTime @db.Date // Only the date component
+  completedAt  DateTime @default(now())
+  status       String   @default("COMPLETED") // 'COMPLETED', 'CANCELLED'
+  schedule     TaskSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  
+  @@unique([scheduleId, date])
+}
+
+model AiForecast {
+  id             String   @id @default(cuid())
+  status         String   // OK, WARNING, CRITICAL
+  text           String
+  recommendation String?
+  createdAt      DateTime @default(now())
+}
+
+model FeedLog {
+  id          String   @id @default(cuid())
+  cageId      String
+  amountKg    Float
+  date        DateTime @default(now())
+  scheduleId  String?
+  cage        Cage     @relation(fields: [cageId], references: [id], onDelete: Cascade)
+}
+
+model WeightLog {
+  id        String   @id @default(cuid())
+  batchId   String
+  avgWeight Float    // Текущий средний вес в граммах
+  date      DateTime @default(now())
+  batch     FishBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+}
